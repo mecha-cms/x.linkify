@@ -1,0 +1,225 @@
+Well-formed URL syntax (required to match 100% correctly):
+
+Plain URLs (not delimited):
+foo http://example.com bar...
+foo http://example.com:80 bar...
+foo http://example.com:80/path/ bar...
+foo http://example.com:80/path/file.txt bar...
+foo http://example.com:80/path/file.txt?query=val&amp;var2=val2 bar...
+foo http://example.com:80/path/file.txt?query=val&amp;var2=val2#fragment bar...
+foo http://example.com/(file's_name.txt) bar... (with ' and (parentheses))
+foo http://[2001:0db8:85a3:08d3:1319:8a2e:0370:7348] bar... ([IPv6 literal])
+foo http://[2001:0db8:85a3:08d3:1319:8a2e:0370:7348]/file.txt bar... ([IPv6] with path)
+
+URLs ending with [.!',;:?] punctuation:
+foo http://example.com. bar...
+foo http://example.com! bar...
+foo http://example.com' bar...
+foo http://example.com, bar...
+foo http://example.com; bar...
+foo http://example.com: bar...
+foo http://example.com? bar...
+
+URLs within matching "()[]{}&lt;&gt;" delimiters:
+foo (http://example.com) bar...
+foo [http://example.com] bar...
+foo {http://example.com} bar...
+foo &lt;http://example.com&gt; bar... (encoded as: &amp;lt;URL&amp;gt;)
+foo &lt;http://example.com&gt; bar... (encoded as: &amp;#60;URL&amp;#62;)
+foo &lt;http://example.com&gt; bar... (encoded as: &amp;#x3C;URL&amp;#x3E;)
+foo (http://example.com/(path)/file.txt) bar... (with inside (parentheses))
+foo (http://example.com/path/(file.txt)) bar... (with ending (parentheses))
+foo [http://[2001:0db8:85a3:08d3:1319:8a2e:0370:7348]] bar... ([IPv6 literal])
+
+URLs within matching "()[]{}&lt;&gt;" delimiters ending with [.!',;:?] punctuation:
+foo (http://example.com.) bar...
+foo [http://example.com!] bar...
+foo {http://example.com'} bar...
+foo &lt;http://example.com,&gt; bar... (encoded as: &amp;lt;URL&amp;gt;)
+foo &lt;http://example.com;&gt; bar... (encoded as: &amp;#60;URL&amp;#62;)
+foo &lt;http://example.com:&gt; bar... (encoded as: &amp;#x3C;URL&amp;#x3E;)
+foo (http://example.com/(path)/file.txt?) bar... (with inside (parentheses))
+foo (http://example.com/path/(file.txt).) bar... (with ending (parentheses))
+foo [http://[2001:0db8:85a3:08d3:1319:8a2e:0370:7348]!] bar... ([IPv6 literal])
+
+URLs within matching quotes:
+foo 'http://example.com' bar...
+foo 'http://example.com' bar... (encoded as: 'URL' Note 1.)
+foo 'http://example.com' bar... (encoded as: &amp;#39;URL&amp;#39;)
+foo 'http://example.com' bar... (encoded as: &amp;#039;URL&amp;#039;)
+foo 'http://example.com' bar... (encoded as: &amp;#x27;URL&amp;#x27;)
+foo 'http://example.com' bar... (encoded as: &amp;#x027;URL&amp;#x027;)
+foo "http://example.com" bar...
+foo "http://example.com" bar... (encoded as: &amp;quot;URL&amp;quot;)
+foo "http://example.com" bar... (encoded as: &amp;#34;URL&amp;#34;)
+foo "http://example.com" bar... (encoded as: &amp;#034;URL&amp;#034;)
+foo "http://example.com" bar... (encoded as: &amp;#x22;URL&amp;#x22;)
+foo "http://example.com" bar... (encoded as: &amp;#x022;URL&amp;#x022;)
+
+Note 1. The &amp;apos; entity is not part of the HTML 4 standard and Internet Explorer 6 does not recognize it. If you are viewing the HTML version of this page with IE, this entity may initially appear as: "&amp;apos;". In Firefox, Opera and Safari, it appears as "'". However, the linkify_html() function converts each &amp;apos; to its numeric html entity equivalent: &amp;#39;, so once this has run (either by clicking on the paragraph or loading the PHP version of the page), then they should all appear correctly. Note also that The <a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_16">W3C recommends</a> to NOT use the &amp;apos; entity in HTML documents, but to use &amp;#39; instead. This page is using it to demonstrate how this char is handled by the Linkify() function.
+
+URLs within matching quotes and ending [.!',;:?] punctuation inside:
+foo 'http://example.com.' bar...
+foo 'http://example.com!' bar... (encoded as: 'URL' Note 1.)
+foo 'http://example.com'' bar... (encoded as: &amp;#39;URL&amp;#39;)
+foo 'http://example.com,' bar... (encoded as: &amp;#039;URL&amp;#039;)
+foo 'http://example.com;' bar... (encoded as: &amp;#x27;URL&amp;#x27;)
+foo 'http://example.com:' bar... (encoded as: &amp;#x027;URL&amp;#x027;)
+foo "http://example.com?" bar...
+foo "http://example.com." bar... (encoded as: &amp;quot;URL&amp;quot;)
+foo "http://example.com!" bar... (encoded as: &amp;#34;URL&amp;#34;)
+foo "http://example.com'" bar... (encoded as: &amp;#034;URL&amp;#034;)
+foo "http://example.com," bar... (encoded as: &amp;#x22;URL&amp;#x22;)
+foo "http://example.com;" bar... (encoded as: &amp;#x022;URL&amp;#x022;)
+
+URLs within matching quotes and ending [.!',;:?] punctuation outside:
+foo 'http://example.com'. bar...
+foo 'http://example.com'! bar... (encoded as: 'URL' Note 1.)
+foo 'http://example.com'' bar... (encoded as: &amp;#39;URL&amp;#39;)
+foo 'http://example.com', bar... (encoded as: &amp;#039;URL&amp;#039;)
+foo 'http://example.com'; bar... (encoded as: &amp;#x27;URL&amp;#x27;)
+foo 'http://example.com': bar... (encoded as: &amp;#x027;URL&amp;#x027;)
+foo "http://example.com"? bar...
+foo "http://example.com". bar... (encoded as: &amp;quot;URL&amp;quot;)
+foo "http://example.com"! bar... (encoded as: &amp;#34;URL&amp;#34;)
+foo "http://example.com"' bar... (encoded as: &amp;#034;URL&amp;#034;)
+foo "http://example.com", bar... (encoded as: &amp;#x22;URL&amp;#x22;)
+foo "http://example.com"; bar... (encoded as: &amp;#x022;URL&amp;#x022;)
+
+URLs with embedded quote and ampersand HTML entities:
+foo http://example.com/file's_name.txt bar... ("'" encoded as: ' Note 1.)
+foo http://example.com/file's_name.txt bar... ("'" encoded as: &amp;#39;)
+foo http://example.com/file's_name.txt bar... ("'" encoded as: &amp;#x27;)
+foo http://example.com/file&amp;s_name.txt bar... ("&amp;" encoded as: &amp;amp;)
+Not well-formed improperly delimited URL syntax (may not match 100% correctly):
+
+URLs within only opening "()[]{}&lt;&gt;" delimiter:
+foo (http://example.com bar...
+foo [http://example.com bar...
+foo {http://example.com bar...
+foo &lt;http://example.com bar... (encoded as: &amp;lt;URL)
+foo &lt;http://example.com bar... (encoded as: &amp;#60;URL)
+foo &lt;http://example.com bar... (encoded as: &amp;#x3C;URL)
+foo (http://example.com/(path)/file.txt bar... (Note 2.)
+foo (http://example.com/path/(file.txt) bar... (Note 2.)
+foo [http://[2001:0db8:85a3:08d3:1319:8a2e:0370:7348] bar... (Note 2.)
+
+URLs within only closing "()[]{}&lt;&gt;" delimiter:
+foo http://example.com) bar... (Note 2.)
+foo http://example.com] bar... (Note 2.)
+foo http://example.com} bar...
+foo http://example.com&gt; bar... (encoded as: URL&amp;gt;)
+foo http://example.com&gt; bar... (encoded as: URL&amp;#62;)
+foo http://example.com&gt; bar... (encoded as: URL&amp;#x3E;)
+foo http://example.com/(path)/file.txt) bar... (Note 2.)
+foo http://example.com/path/(file.txt)) bar... (Note 2.)
+foo http://[2001:0db8:85a3:08d3:1319:8a2e:0370:7348]] bar... (Note 2.)
+
+Note 2. The linkify function demonstrated by this web page uses a single regex replace operation that is not smart enough to correctly exclude the trailing delimiter that is erroneously being included in these examples. However, by using more sophisticated logic, a smarter linkify function can be easily implemented. As an example, the analyse_links() function in linkify.js checks for balanced bracket nesting to determine which links to mark red.
+
+URLs within only opening quotes:
+foo 'http://example.com bar...
+foo 'http://example.com bar... (encoded as: 'URL Note 1.)
+foo 'http://example.com bar... (encoded as: &amp;#39;URL)
+foo 'http://example.com bar... (encoded as: &amp;#039;URL)
+foo 'http://example.com bar... (encoded as: &amp;#x27;URL)
+foo 'http://example.com bar... (encoded as: &amp;#x027;URL)
+foo "http://example.com bar...
+foo "http://example.com bar... (encoded as: &amp;quot;URL)
+foo "http://example.com bar... (encoded as: &amp;#34;URL)
+foo "http://example.com bar... (encoded as: &amp;#034;URL)
+foo "http://example.com bar... (encoded as: &amp;#x22;URL)
+foo "http://example.com bar... (encoded as: &amp;#x022;URL)
+
+URLs within only closing quotes:
+foo http://example.com' bar...
+foo http://example.com' bar... (encoded as: URL' Note 1.)
+foo http://example.com' bar... (encoded as: URL&amp;#39;)
+foo http://example.com' bar... (encoded as: URL&amp;#039;)
+foo http://example.com' bar... (encoded as: URL&amp;#x27;)
+foo http://example.com' bar... (encoded as: URL&amp;#x027;)
+foo http://example.com" bar...
+foo http://example.com" bar... (encoded as: URL&amp;quot;)
+foo http://example.com" bar... (encoded as: URL&amp;#34;)
+foo http://example.com" bar... (encoded as: URL&amp;#034;)
+foo http://example.com" bar... (encoded as: URL&amp;#x22;)
+foo http://example.com" bar... (encoded as: URL&amp;#x022;)
+
+URLs within only closing quotes and ending [.!',;:?] punctuation inside:
+foo http://example.com.' bar...
+foo http://example.com!' bar... (encoded as: URL' Note 1.)
+foo http://example.com'' bar... (encoded as: URL&amp;#39;)
+foo http://example.com,' bar... (encoded as: URL&amp;#039;)
+foo http://example.com;' bar... (encoded as: URL&amp;#x27;)
+foo http://example.com:' bar... (encoded as: URL&amp;#x027;)
+foo http://example.com?" bar...
+foo http://example.com." bar... (encoded as: URL&amp;quot;)
+foo http://example.com!" bar... (encoded as: URL&amp;#34;)
+foo http://example.com'" bar... (encoded as: URL&amp;#034;)
+foo http://example.com," bar... (encoded as: URL&amp;#x22;)
+foo http://example.com;" bar... (encoded as: URL&amp;#x022;)
+
+URLs within only closing quotes and ending [.!',;:?] punctuation outside:
+foo http://example.com'. bar...
+foo http://example.com'! bar... (encoded as: URL' Note 1.)
+foo http://example.com'' bar... (encoded as: URL&amp;#39;)
+foo http://example.com', bar... (encoded as: URL&amp;#039;)
+foo http://example.com'; bar... (encoded as: URL&amp;#x27;)
+foo http://example.com': bar... (encoded as: URL&amp;#x027;)
+foo http://example.com"? bar...
+foo http://example.com". bar... (encoded as: URL&amp;quot;)
+foo http://example.com"! bar... (encoded as: URL&amp;#34;)
+foo http://example.com"' bar... (encoded as: URL&amp;#034;)
+foo http://example.com", bar... (encoded as: URL&amp;#x22;)
+foo http://example.com"; bar... (encoded as: URL&amp;#x022;)
+
+Pre-linkified URLs in HTML or BBCode syntax (should never match):
+
+URLs preceded with "=" (i.e. inside HTML tags):
+foo href=http://example.com bar... (unquoted, no spacing)
+foo href="http://example.com" bar... (double-quoted, no spacing)
+foo href='http://example.com' bar... (single-quoted, no spacing)
+foo href = http://example.com bar... (unquoted, with spacing)
+foo href = "http://example.com" bar... (double-quoted, with spacing)
+foo href = 'http://example.com' bar... (single-quoted, with spacing)
+
+URL's preceded with "=" (i.e. inside BBCode tags):
+foo [url=http://example.com/path/]LINK[/url] bar...
+foo [url = http://example.com/path/]LINK[/url] bar...
+foo [url="http://example.com/path/"]LINK[/url] bar...
+foo [url = "http://example.com/path/"]LINK[/url] bar...
+foo [url='http://example.com/path/']LINK[/url] bar...
+foo [url = 'http://example.com/path/']LINK[/url] bar...
+foo [url]http://example.com/path/[/url] bar...
+
+---
+
+The above example is provided by the original author of the linkify http://jmrware.com/articles/2010/linkifyurl/linkify.html. The below example is extra tests that I made for some more specific conditions:
+
+<a href="http://example.com">http://example.com</a> already linked
+
+URL in script element (view source)
+<script>
+// http://example.com
+const link = 'http://example.com';
+</script>
+
+URL in style element (view source)
+<style>
+/* http://example.com */
+asdf {
+  background-image: url(http://example.com/image.jpg);
+}
+</style>
+
+URL in element attribute (view source)
+<foo bar="http://example.com"></foo>
+
+URL in text area
+<textarea>asdf http://example.com asdf</textarea>
+
+URL in code block (should be linkified)
+<pre><code>/* http://example.com */
+function foo(bar = 1) {
+    return 'baz';
+}</code></pre>
