@@ -82,19 +82,19 @@ function linkify($content) {
         }
         $out .= \preg_replace_callback($pattern, static function ($m) {
             $m = \array_replace(\array_fill(0, 15, ""), $m);
-			$host = $_SERVER['HTTP_HOST'];
-			$u = $m[2] . $m[5] . $m[8] . $m[11] . $m[14];
-			if (
-				false === \strpos($u, '://' . $host . '/') &&
-				false === \strpos($u, '://' . $host . '?') &&
-				false === \strpos($u, '://' . $host . '&') &&
-				false === \strpos($u, '://' . $host . '#') &&
-				false === \strpos($u . \P, '://' . $host . \P)
-			) {
-				$x = ' rel="nofollow" target="_blank"';
-			} else {
-				$x = "";
-			}
+            $host = $_SERVER['HTTP_HOST'];
+            $u = $m[2] . $m[5] . $m[8] . $m[11] . $m[14];
+            if (
+                false === \strpos($u, '://' . $host . '/') &&
+                false === \strpos($u, '://' . $host . '?') &&
+                false === \strpos($u, '://' . $host . '&') &&
+                false === \strpos($u, '://' . $host . '#') &&
+                false === \strpos($u . \P, '://' . $host . \P)
+            ) {
+                $x = ' rel="nofollow" target="_blank"';
+            } else {
+                $x = "";
+            }
             return $m[1] . $m[4] . $m[7] . $m[10] . $m[13] . '<a href="' . $u . '"' . $x . '>' . $m[2] . $m[5] . $m[8] . $m[11] . $m[14] . '</a>' . $m[3] . $m[6] . $m[9] . $m[12];
         }, $part);
     }
