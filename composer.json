@@ -1,5 +1,5 @@
 {
-  "description": "Automatically convert plain text links into clickable links.",
+  "description": "Converts plain text links into clickable links.",
   "license": "GPL-3.0-or-later",
   "name": "mecha-cms/x.linkify",
   "require": {
