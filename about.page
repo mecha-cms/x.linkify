@@ -7,9 +7,6 @@ author: Taufik Nurrohman
 link: 'https://github.com/jmrware/LinkifyURL'
 type: Markdown
 version: 2.0.0
-
-use:
-  '.\lot\x\page': 1
 ...
 
 This extension will look for link pattern in your page content and then convert it into an active link that you can
