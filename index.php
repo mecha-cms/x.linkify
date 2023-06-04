@@ -1,6 +1,6 @@
-<?php namespace x;
+<?php namespace x\linkify\page;
 
-function linkify($content) {
+function content($content) {
     if (!$content) {
         return $content;
     }
@@ -97,7 +97,7 @@ function linkify($content) {
     return $out;
 }
 
-\Hook::set('page.content', __NAMESPACE__ . "\\linkify", 2.1);
+\Hook::set('page.content', __NAMESPACE__ . "\\content", 2.1);
 
 if (\defined("\\TEST") && 'x.linkify' === \TEST && \is_file($test = __DIR__ . \D . 'test.php')) {
     require $test;
