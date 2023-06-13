@@ -6,7 +6,7 @@ color: '#dd09ff'
 author: Taufik Nurrohman
 link: 'https://github.com/jmrware/LinkifyURL'
 type: Markdown
-version: 2.0.0
+version: 1.0.0
 ...
 
 This extension will look for link patterns in your page content and then convert them into active links that you can
