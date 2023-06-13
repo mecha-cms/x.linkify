@@ -194,7 +194,7 @@ foo [url]http://example.com/path/[/url] bar...
 
 ---
 
-The above example is provided by the original author of the linkify http://jmrware.com/articles/2010/linkifyurl/linkify.html. The below example is extra tests that I made for some more specific conditions:
+The example above is provided by the original author of the linkify at http://jmrware.com/articles/2010/linkifyurl/linkify.html. The example below is additional testing I did for some more specific conditions:
 
 <a href="http://example.com">http://example.com</a> already linked
 

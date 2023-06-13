@@ -4,7 +4,6 @@ function page__content($content) {
     if (!$content) {
         return $content;
     }
-    $out = "";
     $pattern = '/# Rev:20100913_0900 github.com\/jmrware\/LinkifyURL
     # Match http & ftp URL that is not already linkified.
       # Alternative 1: URL delimited by (parentheses).
@@ -45,7 +44,7 @@ function page__content($content) {
         [a-z0-9\-_~$()*+=\/#[\]@%]  # Last char can\'t be [.!&\',;:?]
       )                        # End $14. Other non-delimited URL.
     /imx';
-    foreach (\preg_split('/(' . \implode('|', [
+    $parts = \preg_split('/(' . \implode('|', [
         // Processing instruction
         '<\?(?:"[^"]*"|\'[^\']*\'|[^>?])*\?>',
         // Comment
@@ -68,15 +67,17 @@ function page__content($content) {
         '<(?:[^\s"\'\/<=>]+)(?:\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>',
         // Character entity
         '&(?:[a-z\d]+|#\d+|#x[a-f\d]+);'
-    ]) . ')/i', $content, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY) as $part) {
+    ]) . ')/i', $content, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
+    $content = "";
+    foreach ($parts as $part) {
         if ($part && (
             '<' === $part[0] && '>' === \substr($part, -1) ||
             '&' === $part[0] && ';' === \substr($part, -1)
         )) {
-            $out .= $part;
+            $content .= $part;
             continue;
         }
-        $out .= \preg_replace_callback($pattern, static function ($m) {
+        $content .= \preg_replace_callback($pattern, static function ($m) {
             $m = \array_replace(\array_fill(0, 15, ""), $m);
             $host = $_SERVER['HTTP_HOST'];
             $u = $m[2] . $m[5] . $m[8] . $m[11] . $m[14];
@@ -94,7 +95,7 @@ function page__content($content) {
             return $m[1] . $m[4] . $m[7] . $m[10] . $m[13] . '<a href="' . $u . '"' . $x . '>' . $m[2] . $m[5] . $m[8] . $m[11] . $m[14] . '</a>' . $m[3] . $m[6] . $m[9] . $m[12];
         }, $part);
     }
-    return $out;
+    return $content;
 }
 
 \Hook::set('page.content', __NAMESPACE__ . "\\page__content", 2.1);
