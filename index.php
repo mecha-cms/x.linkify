@@ -46,27 +46,27 @@ function page__content($content) {
     /imx';
     $parts = \preg_split('/(' . \implode('|', [
         // Processing instruction
-        '<\?(?:"[^"]*"|\'[^\']*\'|[^>?])*\?>',
+        '<\?(?>"[^"]*"|\'[^\']*\'|[^>?])*\?>',
         // Comment
         '<\!--[\s\S]*?-->',
         // Character data section
         '<\!\[CDATA\[[\s\S]*?\]\]>',
         // Document type
-        '<\!(?:"[^"]*"|\'[^\']*\'|[^>])*>',
+        '<\!(?>"[^"]*"|\'[^\']*\'|[^>])*>',
         // Anchor element
-        '<a(?:\s(?:"[^"]*"|\'[^\']*\'|[^\/>])*)?>[\s\S]*?<\/a>',
+        '<a(?>\s(?>"[^"]*"|\'[^\']*\'|[^\/>])*)?>[\s\S]*?<\/a>',
         // Script element
-        '<script(?:\s(?:"[^"]*"|\'[^\']*\'|[^\/>])*)?>[\s\S]*?<\/script>',
+        '<script(?>\s(?>"[^"]*"|\'[^\']*\'|[^\/>])*)?>[\s\S]*?<\/script>',
         // Style element
-        '<style(?:\s(?:"[^"]*"|\'[^\']*\'|[^\/>])*)?>[\s\S]*?<\/style>',
+        '<style(?>\s(?>"[^"]*"|\'[^\']*\'|[^\/>])*)?>[\s\S]*?<\/style>',
         // Text area element
-        '<textarea(?:\s(?:"[^"]*"|\'[^\']*\'|[^\/>])*)?>[\s\S]*?<\/textarea>',
+        '<textarea(?>\s(?>"[^"]*"|\'[^\']*\'|[^\/>])*)?>[\s\S]*?<\/textarea>',
         // Closing element
-        '<\/(?:[^\s"\'\/<=>]+)>',
+        '<\/(?>[^\s"\'\/<=>]+)>',
         // Opening and void element
-        '<(?:[^\s"\'\/<=>]+)(?:\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>',
+        '<(?>[^\s"\'\/<=>]+)(?>\s(?>"[^"]*"|\'[^\']*\'|[^>])*)?>',
         // Character entity
-        '&(?:[a-z\d]+|#\d+|#x[a-f\d]+);'
+        '&(?>[a-z\d]+|#\d+|#x[a-f\d]+);'
     ]) . ')/i', $content, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
     $content = "";
     foreach ($parts as $part) {
